@@ -33,7 +33,9 @@ let startInfiniteMode action =
     Async.RunSynchronously task
 
 let startSimulation stopper boardSize =
-    let runNextEpochAction = fun _ -> runNextEpoch stopper renderBoardInConsole (makeBoard boardSize) 0
+    let runNextEpochAction = fun _ -> 
+        Console.Clear()
+        runNextEpoch stopper renderBoardInConsole (makeBoard boardSize) 0
     match stopper with
     | Infinite -> startInfiniteMode runNextEpochAction
-    | EpochMaxReached -> runNextEpochAction ()
+    | EpochMaxReached -> runNextEpoch stopper renderBoardInConsole (makeBoard boardSize) 0
