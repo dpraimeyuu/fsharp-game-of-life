@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Engine.Types.fs" />
     <Compile Include="Engine.Initializers.fs" />
+    <Compile Include="Engine.HyperSeriousCore.fs" />
     <Compile Include="Engine.Render.fs" />
     <Compile Include="Engine.ConsoleRender.fs" />
     <Compile Include="Engine.fs" />
