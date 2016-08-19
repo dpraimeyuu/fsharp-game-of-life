@@ -1,6 +1,6 @@
 module Game
 
-open Engine.Simulation
+open Simulation
 
 [<EntryPoint>]
 let main argv =

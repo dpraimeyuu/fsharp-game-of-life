@@ -42,7 +42,12 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine.Types.fs" />
+    <Compile Include="Engine.Initializers.fs" />
+    <Compile Include="Engine.Render.fs" />
+    <Compile Include="Engine.ConsoleRender.fs" />
     <Compile Include="Engine.fs" />
+    <Compile Include="Simulation.fs" />
     <Compile Include="Game.fs" />
     <None Include="App.config" />
   </ItemGroup>
