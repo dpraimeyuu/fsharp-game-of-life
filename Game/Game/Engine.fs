@@ -28,13 +28,12 @@ let rec runNextEpoch stopper (renderer: List<Row> -> unit) (board:List<Row>) cur
     | EpochMaxReached -> wasEpochMaxReached 5 currentEpoch runNextEpochAction
     | _ -> ()
 
-let startKeyPressedMode action =
+let startInfiniteMode action =
     let task = createTimer 1000. action
     Async.RunSynchronously task
 
 let startSimulation stopper boardSize =
     let runNextEpochAction = fun _ -> runNextEpoch stopper renderBoardInConsole (makeBoard boardSize) 0
     match stopper with
-    | Infinite -> startKeyPressedMode runNextEpochAction
+    | Infinite -> startInfiniteMode runNextEpochAction
     | EpochMaxReached -> runNextEpochAction ()
-    | _ -> ()
