@@ -5,5 +5,5 @@ open Simulation
 [<EntryPoint>]
 let main argv =
     printfn "Starting simulation..."
-    startFiniteSimulation 20
+    startInifiniteSimulation 20
     0

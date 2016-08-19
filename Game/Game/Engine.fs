@@ -5,14 +5,17 @@ open EngineTypes
 open EngineConsoleRender
 open EngineInitializers
 open EngineHyperSeriousCore.ComputeNextBoard
+open System.Threading
 
-let wasKeyPressed terminationKey action =
-    match Console.KeyAvailable with
-    | true -> match Console.ReadKey().Key with
-              | key when terminationKey = key -> ()
-              | _ -> action ()
-    | false -> action ()
-
+let createTimer timerInterval action =
+    let timer = new System.Timers.Timer(timerInterval)
+    timer.AutoReset <- true
+    timer.Elapsed.Add action
+    async {
+        timer.Start()
+        do! Async.Sleep Timeout.Infinite
+        }
+        
 let wasEpochMaxReached epochMaxNumber currentEpoch action =
     match currentEpoch with
     | currentEpoch when currentEpoch = epochMaxNumber -> ()
@@ -22,8 +25,16 @@ let rec runNextEpoch stopper (renderer: List<Row> -> unit) (board:List<Row>) cur
     let runNextEpochAction = fun _ -> (runNextEpoch stopper renderer (getNextBoard board) (currentEpoch + 1))
     renderer board
     match stopper with
-    | KeyPressed -> wasKeyPressed ConsoleKey.Q runNextEpochAction
     | EpochMaxReached -> wasEpochMaxReached 5 currentEpoch runNextEpochAction
+    | _ -> ()
+
+let startKeyPressedMode action =
+    let task = createTimer 1000. action
+    Async.RunSynchronously task
 
 let startSimulation stopper boardSize =
-    runNextEpoch stopper renderBoardInConsole (makeBoard boardSize) 0
+    let runNextEpochAction = fun _ -> runNextEpoch stopper renderBoardInConsole (makeBoard boardSize) 0
+    match stopper with
+    | Infinite -> startKeyPressedMode runNextEpochAction
+    | EpochMaxReached -> runNextEpochAction ()
+    | _ -> ()

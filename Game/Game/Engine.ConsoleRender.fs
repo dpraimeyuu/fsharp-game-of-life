@@ -22,6 +22,7 @@ let renderRowInConsole row =
 let renderRowInConsoleReducer = renderReducer<Row, string> stringConcat renderRowInConsole
 
 let renderInConsole board =
+    Console.Clear ()
     board
         |> List.fold renderRowInConsoleReducer String.Empty
         |> printfn "%s"
