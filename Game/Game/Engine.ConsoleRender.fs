@@ -26,4 +26,9 @@ let renderInConsole board =
         |> List.fold renderRowInConsoleReducer String.Empty
         |> printfn "%s"
 
-let renderBoardInConsole = renderBoard renderInConsole
+let renderBoardInConsole onBeforeRender board = 
+    onBeforeRender ()
+    renderBoard renderInConsole board
+
+let renderBoardInConsoleClearedOutput = renderBoardInConsole (fun _ -> Console.Clear())
+let renderBoardInConsolePersistedOutput = renderBoardInConsole id
